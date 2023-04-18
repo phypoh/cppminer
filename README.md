@@ -134,7 +134,7 @@ optional arguments:
   -c clear_resources_flag, --clear_resources clear_resources_flag
                         if True clear resource files
   -m map_file_size, --map_size map_file_size
-                        size of the DB file, default(6442450944 bytes)
+                        size of the DB file, default(100000000000 bytes)
 ~~~
 
 
