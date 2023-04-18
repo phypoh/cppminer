@@ -88,8 +88,10 @@ class AstParser:
     def save(self):
         if not self.out_path:
             return
-        if not os.path.exists(self.out_path):
-            os.makedirs(self.out_path)
+        # if not os.path.exists(self.out_path):
+        #    print(self.out_path, "path does not exist!")
+        #    print(os.path.exists(self.out_path))
+        #    os.makedirs(self.out_path)
         if len(self.samples) > 0:
             file_name = os.path.join(self.out_path, str(uuid.uuid4().hex) + ".c2s")
             # print(file_name)

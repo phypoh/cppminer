@@ -1,10 +1,73 @@
 # cppminer
+
+**This is a modified fork of [Kolkir's cppminer](https://github.com/Kolkir/cppminer) for easier out-of-the-box running.**
+
+
+
 cppminer produces a [code2seq](https://github.com/tech-srl/code2seq) compatible datasets from C++ code bases.
 
 Experimental [C++](https://drive.google.com/file/d/15BDd6zHFkVJXl95FG4JnnSse48k1UR3E/view?usp=sharing) dataset mined from the Chromium project sources.
 
 This tool consists from three scripts which should be run consistently.
- 
+
+
+
+# 0. Installation and Dependencies 
+
+### Python Dependencies
+
+After creating your new environment, install all python dependencies with:
+
+```bash
+cd src
+pip3 install -r requirements.txt
+```
+
+
+
+### Libclang Installation
+
+The `miner.py` script runs on libclang-16-dev package by default. 
+
+```bash
+# For Ubuntu installation
+wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"
+sudo apt-get update
+sudo apt-get install libclang-16-dev
+```
+
+
+
+The libclang.so file is found in `/usr/lib/x86_64-linux-gnu/libclang-16.so.1` by default. It is recommended to create a symbolic link for easier reference later on: 
+
+```bash
+sudo ln -s /usr/lib/x86_64-linux-gnu/libclang-16.so.1 /usr/lib/x86_64-linux-gnu/libclang.so
+```
+
+
+
+### Generating `compile_commands.json`
+
+If you have a make file:
+
+```bash
+sudo apt-get install bear
+bear make -j$(nproc)
+```
+
+
+
+If you are using cmake, add this following to your `CmakeLists.txt` file:
+
+```cmake
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+```
+
+
+
+
+
 # 1. Miner 
 The `miner.py` is the main utility which traverse c++ sources, parse them and produce raw dataset files.
 
@@ -51,10 +114,10 @@ my|key,StringExression|MethodCall|Name,get|value
 ```
 Here `my|key` and `get|value` are tokens, and `StringExression|MethodCall|Name` is the syntactic path that connects them.
 
+
+
 # 2. Merge
-The `merge.py` is the utility which concatenates all raw file, shuffles them and produce three files `dataset.train.c2s`, `dataset.test.c2s` and `dataset.val.c2s` into the given directory.
-Also it can clean source files after merging. The important settings is the `map_file_size` which defines the size of the database file used for merging, 
-you should increase default value of 6Gb for large datasets. 
+The `merge.py` is the utility which concatenates all raw file, shuffles them and produce three files `dataset.train.c2s`, `dataset.test.c2s` and `dataset.val.c2s` into the given directory. Also it can clean source files after merging. The important settings is the `map_file_size` which defines the size of the database file used for merging, you should increase default value of 6Gb for large datasets. 
 
 It has following command line interface:
 
@@ -74,7 +137,14 @@ optional arguments:
                         size of the DB file, default(6442450944 bytes)
 ~~~
 
+
+
 # 3. Code2vec preprocess
 
-The third utility is the `preprocess.sh` from the `code2seq` folder, this is modified script from the original project which generates dataset in format suitable for the `code2seq` model.
-in general it creates new files with truncated and padded number of paths for each example.
+The third utility is the `preprocess.sh` from the `code2seq` folder, this is modified script from the original project which generates dataset in format suitable for the `code2seq` model. In general it creates new files with truncated and padded number of paths for each example.
+
+```bash
+chmod +x preprocess.sh
+./preprocess.sh <input_folder> <output_folder>
+```
+

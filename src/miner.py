@@ -99,6 +99,9 @@ def main():
 
     output_path = Path(args.OutPath).resolve().as_posix()
     print('Output path: ' + output_path)
+    
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
 
     print("Parsing files ...")
     tasks = multiprocessing.JoinableQueue()

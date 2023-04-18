@@ -1,7 +1,11 @@
 import multiprocessing
 import os
 from clang.cindex import CompilationDatabase, CompilationDatabaseError
+
+import sys
+sys.path.append('../')
 from cpp_parser import AstParser
+
 
 
 def is_object_file(file_path):
