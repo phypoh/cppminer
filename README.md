@@ -68,6 +68,19 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 
+### Integrating into code2seq
+
+When cloning Kolkir's Tensorflow 2.1 version of [code2seq](https://github.com/Kolkir/cppminer), run the scripts on Python 3.7, with  `requirements_code2seq.txt` pip installed. 
+
+
+
+Note that code2seq is somewhat version sensitive, and may differ depending on your GPU and CUDA version. For more information in dependencies, please see the following articles:
+
+- https://github.com/tech-srl/code2seq/issues/117
+- https://github.com/tech-srl/code2seq/issues/90
+
+
+
 # 1. Miner 
 The `miner.py` is the main utility which traverse c++ sources, parse them and produce raw dataset files.
 
